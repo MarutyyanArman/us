@@ -177,6 +177,29 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;margin:0;line-height:1.25}
 .gift:nth-child(3n){background:linear-gradient(135deg,var(--peach),var(--gold))}
 .gift:active{transform:scale(.94)}
 .gift.opened{opacity:.5}
+.envwrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin:10px auto}
+.env{position:relative;width:230px;height:155px;cursor:pointer;transition:transform .25s}
+.env:active{transform:scale(.96)}
+.env .body{position:absolute;inset:0;border-radius:12px;
+  background:linear-gradient(160deg,#fbf1e6,#f0dcc9);box-shadow:var(--shadow);overflow:hidden}
+.env .flap{position:absolute;left:0;right:0;top:0;height:78px;
+  background:linear-gradient(160deg,#f6e3d0,#e8cdb4);
+  clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;
+  transition:transform .6s cubic-bezier(.4,0,.2,1);z-index:3}
+.env.open .flap{transform:rotateX(180deg)}
+.env .seal{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);z-index:4;
+  width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e9909f,#c4566a);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 6px 14px rgba(0,0,0,.35);transition:opacity .3s}
+.env.open .seal{opacity:0}
+.env .peek{position:absolute;left:10px;right:10px;bottom:8px;top:26px;border-radius:8px;
+  background:#fffdf9;z-index:2;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.env.open .peek{transform:translateY(-26px)}
+.letterpaper{background:#fffdf8;color:var(--ink);border-radius:16px;padding:22px 18px;
+  box-shadow:var(--shadow);max-width:360px;margin:0 auto;text-align:left;
+  white-space:pre-line;font-size:15.5px;line-height:1.75;
+  animation:sceneIn .5s ease both}
+.letterpaper .sign{font-family:var(--disp);color:#b06a7c;margin-top:14px;font-size:16px}
 .letter{text-align:left;white-space:pre-line;font-size:15px;line-height:1.7;color:var(--ink)}
 #music{position:fixed;z-index:70;right:14px;bottom:calc(14px + var(--safe-b));width:52px;height:52px;border-radius:50%;
   border:1px solid rgba(255,255,255,.3);background:var(--card);color:var(--text);font-size:20px;cursor:pointer;
@@ -395,23 +418,25 @@ const DATA = {
     {ico:"🎙️", t:"Голосовое сообщение", body:"Положи своё аудио в assets/audio/voice.mp3 — и оно заиграет тут.", audio:"assets/audio/voice.mp3"},
     {ico:"🎬", t:"Видео-нарезка", body:"Сюда — ваше видео (assets/video/montage.mp4).", video:"assets/video/montage.mp4"},
     {ico:"💌", t:"Письмо", letter:
-`Элла, сиртс моя.
+`Im sers,
 
-Сегодня тебе 21. А между нами — 1850 километров. Две цифры, и вторая мне нравится гораздо меньше.
+Esor du 21-es. Mer mej voch haskacar 1850 km a. Erku hat tiv, voric erkrordy im dury vapshe chi gali.
 
-Знаешь, я долго думал, что подарить человеку, которому хочется подарить всё сразу. И понял простую вещь: единственное, чего я по-настоящему хочу, — это оказаться сегодня рядом. А раз реальность пока отказывается это устроить, я построил нам целую вселенную, где расстояния просто не существует.
+Esor miak bany vor iskakanic uzum em — et qo koxqy linelna. Bayc qani vor irakanutyuny esor miqich urisha u xangaruma mez, qo hamar es pujur bannem sarqe — vory qez indz tvuma hetaqrqir klni u demqid im sirac jpity khaytnvi.
 
-Здесь ты видела фотографии, которых у нас никогда не было. Мы на закате, мы в кафе, мы смеёмся посреди какого-то парка. Их придумала ГПТ, но знаешь, что самое смешное? Она угадала. Именно так я нас и вижу — и однажды мы переснимем каждый кадр по-настоящему.
+Ste du nkarner tesar voronq iskakan chen. Menq zakati jamanak, menq kafeum, menq xndum enq yesim urde… Et sax ГПТ-n a sarqe. Yes motavor henc senc xzikavari el patkeracnum em mez — u mi or menq es pahery irakanutyun ksarqenq.
 
-Ты — самое тёплое, что случилось со мной. С тобой обычный вторник превращается в событие, а плохой день перестаёт быть плохим примерно на третьей минуте разговора. Ты умеешь смеяться так, что я забываю, о чём мы вообще спорили. Ты бываешь невозможной, и я люблю тебя даже в эти моменты — особенно в эти моменты, гандзс.
+Im paycar axjik. Qo het amen hasarak ory yurahatuka darnum im hamar. Amen vat pahy targuma vaty ylnel hetd xosaluc miqani rope heto arden.
 
-Я желаю тебе, чтобы этот год был твоим. Чтобы у тебя получалось то, за что ты берёшься, и не получалось только то, что тебе на самом деле не нужно. Чтобы люди вокруг были добрые, планы — сбывались, а поводов для той самой улыбки было столько, что ты устанешь их считать.
+Gides voncem sirum u chem sirum qo nervers utely miajamanak. Et vaxt du prosto antaneli es darnum mek-mek. U henc et paherin yes qez aveli shatem sirum.
 
-И одно обещание вместо тысячи слов: последний подарок в этой вселенной остался заблокированным. Одно объятие. Открыть его можно только тогда, когда мы окажемся в одном месте. Я не буду обещать даты — но я буду делать всё, чтобы этот замок открылся как можно скорее.
+Es tarin uzum em qo tarin ylni. To motd stacvi en inchy uzum es, u chstacvi en inchy qez irakanum petq chi. To qo shrjapatum menak qo nman bari u pupush mardik ylnen. Uzum em erjanik ylnes kyanqs — u yes klnem et erjankutyan mi masy.
 
-С днём рождения, кянкс. Расстояние — это временно. Ты — нет.
+Ste mi at ban ka vory tenc el zablokirovanni kmna. Et im qez grkeln u pachelna. Yes chgidem erb, u chem kara xostumner tam jamketneri masin — bayc yes ameninch kanem vor et zamoky inchqan hnaravora shut bacvi.
 
-Люблю тебя. Твой Арман 💗`},
+Cnundd shnorhavor im ser. Heravorutyuny jamanakavora, du — che.
+
+Sirum em qez… ❤️`},
     {ico:"📸", t:"Коллекция фото", body:"Загляни на планету «Фотографии» — там всё (ну, почти по-настоящему)."},
   ],
 };
@@ -730,7 +755,8 @@ function presents(){
   const g=$("#gifts");let opened=0;
   DATA.gifts.forEach((gift)=>{const el=document.createElement("div");el.className="gift";el.textContent="🎁";
     el.onclick=()=>{if(!el.classList.contains("opened")){el.classList.add("opened");el.textContent=gift.ico;opened++;
-      if(opened===DATA.gifts.length)$("#last").style.display="inline-block";}openGift(gift);};
+      if(opened===DATA.gifts.length)$("#last").style.display="inline-block";}
+      if(gift.letter){letterScene(gift.letter);}else{openGift(gift);}};
     g.appendChild(el);});
   $("#last").onclick=finalGift;
 }
@@ -745,6 +771,33 @@ function openGift(gift){
     <button class="btn ghost sm" style="margin-top:14px" onclick="closeLightbox()">Закрыть</button>`;
   $("#lightbox").classList.add("show");
 }
+function letterScene(text){
+  const b=$("#obody");
+  b.innerHTML=`<div class="stack">
+    <h2 class="mid script">Тебе письмо 💌</h2>
+    <p class="tiny">Нажми, чтобы открыть</p>
+    <div class="envwrap">
+      <div class="env" id="env">
+        <div class="body"></div><div class="peek"></div>
+        <div class="flap"></div><div class="seal">💗</div>
+      </div>
+    </div>
+    <div id="letterOut"></div>
+  </div>`;
+  const env=$("#env");
+  env.onclick=()=>{
+    if(env.classList.contains("open"))return;
+    env.classList.add("open");
+    sparkleAt(window.innerWidth/2,window.innerHeight/2);
+    setTimeout(()=>{
+      $("#letterOut").innerHTML=`<div class="letterpaper">${text}</div>
+        <p class="tiny" style="margin:18px auto 6px">Да, тот замок — настоящий. Вот он 👇</p>
+        <button class="btn gold" id="toLock" style="margin-top:6px">Тот самый замок 🔒</button>`;
+      $("#toLock").onclick=finalGift;
+      $("#letterOut").scrollIntoView({behavior:"smooth",block:"start"});
+    },700);
+  };
+}
 function finalGift(){
   const b=$("#obody");
   b.innerHTML=`<div class="stack">
@@ -752,6 +805,7 @@ function finalGift(){
     <div class="gift" id="fg" style="width:120px;height:120px;font-size:52px">🎁</div>
     <div id="fgres" style="display:none">
       <h2 class="mid">🔒 Одно объятие</h2>
+      <p class="tiny" style="max-width:320px;margin:0 auto">Это тот самый замок, о котором я писал в письме</p>
       <p class="script" style="font-size:20px">СТАТУС: ЗАБЛОКИРОВАНО</p>
       <p class="lead">Условие разблокировки: мы оба в одном месте.</p>
       <p class="lead">Это я подарю тебе сам. И не один раз.</p>
