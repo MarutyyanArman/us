@@ -104,7 +104,7 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;margin:0;line-height:1.25}
 .planet.locked{opacity:.72}
 .planet.locked .orb{filter:grayscale(.4) drop-shadow(0 6px 10px rgba(0,0,0,.4))}
 .lockbadge{position:absolute;top:8px;right:10px;font-size:14px}
-.overlay{position:fixed;inset:0;z-index:40;max-width:520px;left:50%;transform:translateX(-50%);
+.overlay{position:fixed;top:0;bottom:0;left:50%;width:100%;max-width:520px;z-index:40;transform:translateX(-50%);
   background:radial-gradient(120% 90% at 50% 0%,var(--night-3),var(--night-1));overflow-y:auto;
   -webkit-overflow-scrolling:touch;display:none;padding:calc(70px + var(--safe-t)) 18px calc(40px + var(--safe-b));animation:sceneIn .45s ease both}
 .overlay.show{display:block}
@@ -153,9 +153,9 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;margin:0;line-height:1.25}
 .vinyl .lbl{width:64px;height:64px;border-radius:50%;overflow:hidden}
 .songnav{display:flex;gap:14px;align-items:center;justify-content:center}
 .songcap{font-size:14px;color:var(--text-soft);max-width:300px;min-height:40px;line-height:1.5}
-.stat{display:flex;justify-content:space-between;gap:10px;padding:12px 4px;border-bottom:1px dashed rgba(255,255,255,.18);font-size:14.5px;text-align:left}
-.stat span{flex:1 1 auto;min-width:0}
-.stat b{font-family:var(--disp);color:var(--gold);white-space:normal;word-break:break-word;text-align:right;flex:0 1 42%;line-height:1.3}
+.stat{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 10px;padding:12px 4px;border-bottom:1px dashed rgba(255,255,255,.18);font-size:14.5px;text-align:left}
+.stat span{flex:1 1 140px;min-width:0}
+.stat b{font-family:var(--disp);color:var(--gold);white-space:normal;text-align:right;flex:1 1 auto;line-height:1.35}
 .joke{background:var(--card);border:1px solid rgba(255,255,255,.18);border-radius:var(--r-md);padding:14px;margin:10px 0;font-size:15px;line-height:1.5}
 .future-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:360px;margin:0 auto}
 .fcard{position:relative;border-radius:var(--r-md);padding:18px 12px;min-height:110px;cursor:pointer;
@@ -177,6 +177,19 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;margin:0;line-height:1.25}
 .gift:nth-child(3n){background:linear-gradient(135deg,var(--peach),var(--gold))}
 .gift:active{transform:scale(.94)}
 .gift.opened{opacity:.5}
+.callbox{width:100%;max-width:320px;margin:0 auto;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.2);border-radius:var(--r-lg);padding:24px 18px;backdrop-filter:blur(8px)}
+.callava{width:92px;height:92px;border-radius:50%;margin:0 auto 12px;overflow:hidden;
+  border:2px solid rgba(255,255,255,.35);box-shadow:var(--shadow)}
+.callava img{width:100%;height:100%;object-fit:cover}
+.callname{font-family:var(--disp);font-size:19px;margin-bottom:4px}
+.callstat{font-size:14px;color:var(--text-soft);min-height:22px}
+.callbtn{width:66px;height:66px;border-radius:50%;border:none;font-size:26px;cursor:pointer;
+  margin:16px auto 0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#7fd39a,#4bb373);box-shadow:0 10px 22px -8px rgba(75,179,115,.9)}
+.callbtn:active{transform:scale(.94)}
+.callbtn.ringing{animation:ring .6s ease-in-out infinite}
+@keyframes ring{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
 .envwrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin:10px auto}
 .env{position:relative;width:230px;height:155px;cursor:pointer;transition:transform .25s}
 .env:active{transform:scale(.96)}
@@ -235,9 +248,9 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;margin:0;line-height:1.25}
 <div id="app"><div id="root"></div></div>
 <div class="overlay" id="overlay">
   <div class="topbar">
-    <button class="iconbtn" id="obackBtn" aria-label="Назад">←</button>
+    <div style="width:44px"></div>
     <div class="otitle" id="otitle"></div>
-    <button class="iconbtn" id="ohomeBtn" aria-label="Ко вселенной">✦</button>
+    <button class="iconbtn" id="ohomeBtn" aria-label="Закрыть">✕</button>
   </div>
   <div id="obody"></div>
 </div>
@@ -290,40 +303,50 @@ const DATA = {
 
   // 6 интерактивов «сократи расстояние»
   intro:[
-    { type:"quiz", distTo:1620,
-      q:"Где мы впервые встретились?",
-      options:["Онлайн","В универе","На вечеринке у друзей","Не помню (опасный ответ)"],
+    { type:"quiz", distTo:1680,
+      q:"С чего вообще всё началось?",
+      options:["Дайвинчик 🍷","Общие друзья","Инстаграм","Судьба (слишком романтично)"],
       correct:0,
-      wrong1:"Хм… подозрительно, пучурс.",
-      wrong2:"Ладно, ещё один шанс. Только потому что именинница." },
+      wrong1:"Неверно. Хотя звучит приличнее, согласен.",
+      wrong2:"Ладно, признаём честно: нас познакомил бот." },
 
-    { type:"quiz", distTo:1400,
-      q:"Сколько сантиметров между нашими макушками?",
-      options:["Нисколько, мы одного роста","Немножко","Прилично","Я просто компактная"],
-      correct:3,
-      wrong1:"Неправильно. Подумай ещё раз, снизу вверх.",
-      wrong2:"Правильный ответ ты знаешь, просто не хочешь признавать." },
+    { type:"quiz", distTo:1450,
+      q:"Ты была в Армении, я позвал тебя на кофе. Что ты ответила?",
+      options:["Согласилась","Отказалась","Не помню","Промолчала"],
+      correct:1,
+      wrong1:"Если бы. История была бы совсем другая.",
+      wrong2:"Ты отказалась. И жалеешь об этом до сих пор — я знаю 😌" },
 
-    { type:"missall", distTo:1180,
+    { type:"call", distTo:1150,
+      q:"Сколько раз мы говорили по телефону голосом?" },
+
+    { type:"quiz", distTo:980,
+      q:"Что я прошу у тебя чаще всего?",
+      options:["Скинуть фотку 📸","Поесть нормально","Не плакать","Быть аккуратнее"],
+      correct:0,
+      wrong1:"Тоже прошу. Но не так часто.",
+      wrong2:"«Скинь фотку». Каждый день. Иногда дважды." },
+
+    { type:"missall", distTo:820,
       q:"Что я скучаю больше всего?",
       options:["Твою улыбку","Твои обнимашки","Твой голос","Бесить тебя вживую"],
       after1:"Неправильно.", after2:"Очевидно — всё сразу, кянкс." },
 
-    { type:"slider", distTo:950,
+    { type:"slider", distTo:680,
       q:"Насколько сильно я по тебе скучаю?" },
 
-    { type:"quiz", distTo:760,
-      q:"Сколько раз в день ты пытаешься меня вывести?",
-      options:["Ни разу, я ангел","Раза три","Я не считаю","Это мой способ говорить «люблю»"],
-      correct:3,
-      wrong1:"Система зафиксировала другое число.",
-      wrong2:"Ладно. Последний вариант — правда, и мы оба это знаем." },
+    { type:"quiz", distTo:540,
+      q:"Что происходит, когда ты идёшь по комнате?",
+      options:["Ничего, я грациозная","Что-то падает","Что-то разбивается","Я обо что-то ударяюсь"],
+      correct:0,
+      wrong1:"Правильно по факту. Но неправильно по легенде.",
+      wrong2:"Ладно. Официальная версия — «я грациозная». Мы её придерживаемся 😇" },
 
-    { type:"runaway", distTo:560,
+    { type:"runaway", distTo:420,
       q:"Кто в наших отношениях всегда прав?",
       right:"Ты, конечно 💗", wrong:"Я" },
 
-    { type:"photopick", distTo:330,
+    { type:"photopick", distTo:280,
       q:"Какое из этих фото — моё любимое?",
       photos:[
         {img:"assets/photos/pick1.jpg", cap:"вот это"},
@@ -334,7 +357,7 @@ const DATA = {
 
     { type:"quiz", distTo:150,
       q:"Что я скажу первым делом, когда наконец тебя увижу?",
-      options:["«Привет»","Ничего, просто обниму","«Ты стала ещё меньше»","«Я же говорил, что дождёмся»"],
+      options:["«Привет»","Ничего, просто обниму","«Ты стала ещё меньше»","«Наконец-то»"],
       correct:1,
       wrong1:"Не-а. Слов там не будет.",
       wrong2:"Подсказка: для этого рот не нужен." },
@@ -352,8 +375,8 @@ const DATA = {
 
   // НАША ИСТОРИЯ
   story:[
-    {date:"Начало", cap:"Где-то здесь всё и завертелось", sub:"мы ещё не знали, что попались", img:"assets/photos/story1.jpg"},
-    {date:"Первый важный момент", cap:"Момент, когда я понял, что это надолго", sub:"спойлер: я был прав", img:"assets/photos/story2.jpg"},
+    {date:"Начало", cap:"Нас познакомил Дайвинчик", sub:"бот, который сделал всё правильно", img:"assets/photos/story1.jpg"},
+    {date:"Тот самый кофе", cap:"Я позвал тебя на кофе. Ты отказалась.", sub:"мы оба до сих пор об этом жалеем", img:"assets/photos/story2.jpg"},
     {date:"Первое свидание", cap:"Наше первое свидание", sub:"я нервничал сильнее, чем показывал, дамбул", img:"assets/photos/story3.jpg"},
     {date:"Любимое воспоминание", cap:"Одно из моих любимых", sub:"с тобой даже обычный день — событие", img:"assets/photos/story4.jpg"},
     {date:"На расстоянии", cap:"Потом между нами появилось 1850 км", sub:"и очень много ночных звонков, сиртс", img:"assets/photos/story5.jpg"},
@@ -374,12 +397,15 @@ const DATA = {
   miss:[
     "Твои обнимашки — по ним больше всего",
     "Как ты смеёшься, когда думаешь, что это не смешно",
-    "Твой голос перед сном",
+    "Твой голос",
+    "Смотреть, как ты ешь и рассказываешь что-то одновременно",
+    "Ловить тебя, когда ты обо что-то запнулась",
     "Ничего не делать вместе и не скучать",
     "Держать тебя за руку без повода",
-    "Бесить тебя вживую, а не по видеосвязи",
-    "Твоё «ну Арма-а-ан» с этой интонацией",
+    "Бесить тебя вживую, а не по переписке",
+    "Вытирать тебе слёзы из-за очередного мультика",
     "Просто быть с тобой в одном городе",
+  
   ],
   missEnd:"Ладно. «Пара вещей» — я приуменьшил. Сильно.",
 
@@ -392,32 +418,42 @@ const DATA = {
 
   // СМЕШНЫЕ МЫ
   stats:[
+    ["Разговоров по телефону голосом", "0 (мировой рекорд)"],
+    ["Раз, когда ты сказала «щас, погоди»", "и на этом всё закончилось"],
     ["Рост официально", "метр с кепкой (спорить бесполезно)"],
-    ["Раз, когда ты сказала «я не маленькая»", "и каждый раз всё менее убедительно"],
+    ["Разбито предметов на пути к холодильнику", "статистика засекречена"],
+    ["Потрачено на шмотки", "не спрашивай"],
+    ["Потрачено на еду", "и не жалко"],
     ["Попыток вывести меня из себя за день", "в среднем 14"],
-    ["Из них успешных", "все, и ты это знаешь"],
     ["Раз, когда ты была права", "не поддаётся подсчёту"],
     ["Раз, когда ты думаешь, что была права", "9 427"],
+    ["Кофе, от которого ты отказалась", "1 (и он до сих пор мне снится)"],
     ["Раз, когда я по тебе скучаю", "ПЕРЕПОЛНЕНИЕ СИСТЕМЫ"],
-    ["Настоящих совместных фото у нас", "0 (поэтому ГПТ так старалась)"],
+  
   ],
   jokes:[
+    "Мой самый частый текст за всю жизнь: «скинь фотку». Второй по частоте: «ну скинь».",
+    "Нас познакомил Дайвинчик. Бот сделал для моей личной жизни больше, чем все мои друзья вместе взятые.",
     "Ты помещаешься в мою худи целиком. Это не оскорбление, это статистика.",
-    "Твоя суперсила — довести меня до состояния «всё, я обиделся» ровно за 40 секунд. И вернуть обратно за 20.",
-    "«Я взрослая и серьёзная» — говорит человек, который не достаёт до верхней полки.",
-    "Ты специально говоришь ерунду, чтобы я начал спорить. Я знаю. Я всё равно начинаю спорить.",
-    "Твой рост измеряется не в сантиметрах, а в количестве раз, когда я тебя поднимаю.",
+    "«Я взрослая и серьёзная» — говорит человек, который плачет над мультиком.",
+    "Ты можешь споткнуться на ровном месте, разбить кружку и обвинить в этом кружку. И я всё равно на твоей стороне.",
+    "Твоя суперсила — довести меня до «всё, я обиделся» за 40 секунд и вернуть обратно за 20.",
     "Если бы за нервы платили, я бы уже купил нам квартиру. В Москве. С видом.",
+    "Ты тратишь деньги быстрее, чем я успеваю спросить «а что это». И я всё равно говорю «тебе идёт».",
+  
   ],
 
   // БУДУЩЕЕ
   future:[
+    {ico:"☕", t:"Тот самый кофе. Вторая попытка"},
+    {ico:"📞", t:"Наш первый разговор голосом"},
     {ico:"📸", t:"Переснять все эти фото по-настоящему"},
-    {ico:"✈️", t:"Наша следующая поездка"},
-    {ico:"🎂", t:"Следующий день рождения вместе"},
+    {ico:"🍽️", t:"Накормить тебя так, как ты любишь"},
+    {ico:"🎬", t:"Посмотреть мультик вместе, а не по видео"},
     {ico:"🏠", t:"Наш будущий дом"},
-    {ico:"☕", t:"Обычный вторник вдвоём"},
+    {ico:"🌆", t:"Обычный вторник вдвоём"},
     {ico:"🌙", t:"Ночь, когда никуда не надо"},
+  
   ],
   futureLock1:"Это воспоминание ещё не создано.",
   futureLock2:"Придётся сделать его самим. Я не против начать пораньше.",
@@ -544,7 +580,7 @@ function runIntroStep(i){
   showChrome(false);
   if(i>=DATA.intro.length)return sceneJourney();
   const st=DATA.intro[i];
-  ({quiz:iQuiz,missall:iMissAll,slider:iSlider,runaway:iRunaway,photopick:iPhotoPick,drag:iDrag}[st.type])(st,i);
+  ({quiz:iQuiz,missall:iMissAll,slider:iSlider,runaway:iRunaway,photopick:iPhotoPick,drag:iDrag,call:iCall}[st.type])(st,i);
 }
 function stepShell(inner){root.innerHTML=`<div class="scene"><div class="wide">${distBar()}</div>${inner}</div>`;}
 function advance(i,to){updateDist(to);setTimeout(()=>runIntroStep(i+1),1150);}
@@ -594,6 +630,33 @@ function iPhotoPick(st,i){
     d.innerHTML=slot(p.img,"фото "+(idx+1),true)+`<div class="cap">${p.cap}</div>`;
     d.onclick=(e)=>{sparkleAt(e.clientX,e.clientY);toast(idx===st.correct?"Именно это ✨":"…тоже красивое, но нет 💗");advance(i,st.distTo);};
     g.appendChild(d);});
+}
+function iCall(st,i){
+  stepShell(`<h2 class="mid">${st.q}</h2>
+    <div class="callbox">
+      <div class="callava">${slot(DATA.img.her,"она",true)}</div>
+      <div class="callname">${DATA.her}</div>
+      <div class="callstat" id="cst">Ноль. Ни разу. За всё время.</div>
+      <button class="callbtn" id="cbtn">📞</button>
+      <p class="tiny" style="margin-top:12px">Попробуй нажать. Вдруг сегодня получится.</p>
+    </div>`);
+  const st2=$("#cst"),btn=$("#cbtn");let tries=0;
+  btn.onclick=(e)=>{
+    tries++;
+    btn.classList.add("ringing");
+    st2.textContent="Соединяю…";
+    setTimeout(()=>{
+      btn.classList.remove("ringing");
+      if(tries===1){st2.textContent="Абонент застеснялся и сбросил.";toast("Как всегда 😌");}
+      else if(tries===2){st2.textContent="Абонент пишет: «давай лучше текстом»";toast("Я это уже слышал");}
+      else{
+        st2.textContent="Ладно. Однажды ты возьмёшь трубку.";
+        sparkleAt(e.clientX,e.clientY);
+        toast("Считаю это обещанием 💗");
+        setTimeout(()=>advance(i,st.distTo),1200);
+      }
+    },1400);
+  };
 }
 function iDrag(st,i){
   stepShell(`<h2 class="mid">${st.q}</h2>
@@ -662,6 +725,7 @@ function openUniverse(){
   root.innerHTML=`<div class="universe">
     <h1 class="big script">Наша вселенная</h1>
     <p class="tiny">Здесь нас ничто не разделяет. Выбирай планету, ${DATA.petHer[0]}.</p>
+    <p class="tiny" style="opacity:.7;margin-top:-2px">🎵 внизу справа — включи музыку</p>
     <div class="moon">${slot(DATA.img.moon,"вы на луне")}</div>
     <div class="planets" id="planets"></div>
   </div>`;
@@ -677,7 +741,7 @@ function openPlanet(id){
   $("#overlay").classList.add("show");$("#overlay").scrollTop=0;tgBack(true);
 }
 function closeOverlay(){$("#overlay").classList.remove("show");tgBack(false);}
-$("#obackBtn").onclick=closeOverlay;$("#ohomeBtn").onclick=closeOverlay;
+$("#ohomeBtn").onclick=closeOverlay;
 
 function pStory(b){
   b.innerHTML=banner("story")+`<div class="tl" id="tl"></div>
@@ -848,11 +912,70 @@ function showChrome(on){$("#menuBtn").classList.toggle("show",on);$("#music").cl
 $("#menuBtn").onclick=()=>$("#menu").classList.add("show");
 function closeMenu(){$("#menu").classList.remove("show");}
 $("#menu").addEventListener("click",(e)=>{if(e.target.id==="menu")closeMenu();});
-const bg=$("#bg");let bgOn=false;
-$("#music").onclick=()=>{if(!bg.src)bg.src="assets/music/bg.mp3";
-  if(bgOn){bg.pause();bgOn=false;$("#music").textContent="🎵";}
-  else{bg.play().then(()=>{bgOn=true;$("#music").textContent="🔊";}).catch(()=>toast("Добавь фоновую музыку в assets/music/bg.mp3"));}
-  state.bgOn=bgOn;save();};
+/* ======= Фоновая музыка: генерируется в коде (оригинальная, ничего не грузим) ======= */
+const Music=(function(){
+  let ctx=null,master=null,timer=null,on=false,step=0;
+  // тёплая романтическая последовательность (Am - F - C - G), ноты в Гц
+  const CHORDS=[
+    [220.00,261.63,329.63,440.00],   // Am
+    [174.61,220.00,261.63,349.23],   // F
+    [261.63,329.63,392.00,523.25],   // C
+    [196.00,246.94,293.66,392.00]    // G
+  ];
+  const MELODY=[523.25,587.33,659.25,783.99,659.25,587.33];
+
+  function voice(freq,t,dur,vol,type){
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type=type||"sine"; o.frequency.value=freq;
+    // мягкая атака и длинное затухание
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol,t+dur*0.35);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(master);
+    o.start(t);o.stop(t+dur+0.1);
+  }
+  function bar(){
+    const t=ctx.currentTime+0.05, ch=CHORDS[step%CHORDS.length];
+    // аккорд-подушка
+    ch.forEach((f,k)=>voice(f,t+k*0.06,7.5,0.045,"sine"));
+    // тихий перебор сверху
+    for(let k=0;k<3;k++){
+      const n=MELODY[(step*2+k)%MELODY.length];
+      voice(n,t+1.2+k*1.5,2.4,0.022,"triangle");
+    }
+    step++;
+  }
+  return {
+    toggle(){
+      if(!ctx){
+        const AC=window.AudioContext||window.webkitAudioContext;
+        if(!AC)return false;
+        ctx=new AC();
+        master=ctx.createGain();master.gain.value=0.0;
+        master.connect(ctx.destination);
+      }
+      if(ctx.state==="suspended")ctx.resume();
+      if(on){
+        master.gain.linearRampToValueAtTime(0.0,ctx.currentTime+1.2);
+        clearInterval(timer);timer=null;on=false;
+      }else{
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+        master.gain.linearRampToValueAtTime(0.9,ctx.currentTime+2.0);
+        bar();timer=setInterval(bar,6000);on=true;
+      }
+      return on;
+    }
+  };
+})();
+let bgOn=false;
+$("#music").onclick=()=>{
+  const r=Music.toggle();
+  if(r===false&&!bgOn){toast("Звук недоступен на этом устройстве");return;}
+  bgOn=r;$("#music").textContent=bgOn?"🔊":"🎵";
+  if(bgOn)toast("Музыка включена 🎶");
+  state.bgOn=bgOn;save();
+};
 
 (function init(){
   if(state.universe){openUniverse();}
